@@ -1,6 +1,6 @@
 import type { Config } from "tailwindcss";
 
-export default {
+const config: Config = {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -20,8 +20,16 @@ export default {
       },
       animation: {
         'fade-in': 'fade-in 1s ease-out forwards',
+      },
+      gridTemplateRows: {
+        '[auto]': 'auto',
+        '[1fr]': '1fr',
+        '[0fr]': '0fr',
       }
     },
   },
   plugins: [],
-} satisfies Config;
+  darkMode: 'media',
+};
+
+export default config;
