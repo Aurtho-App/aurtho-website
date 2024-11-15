@@ -23,7 +23,7 @@ const pricingTiers: PricingTier[] = [
   },
   {
     name: "Pro",
-    price: "$4.99/mo",
+    price: "$4.99",
     description: "Advanced features for serious money management",
     features: [
       "Everything in Basic",
@@ -38,7 +38,7 @@ const pricingTiers: PricingTier[] = [
   },
   {
     name: "Family",
-    price: "$9.99/mo",
+    price: "$9.99",
     description: "Perfect for families and shared finances",
     features: [
       "Everything in Pro",

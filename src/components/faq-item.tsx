@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 
 export function FaqItem({ question, answer }: { question: string; answer: string }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,11 +10,16 @@ export function FaqItem({ question, answer }: { question: string; answer: string
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="py-6 w-full flex justify-between items-center text-left"
+        aria-expanded={isOpen}
       >
         <h3 className="text-lg md:text-xl font-semibold text-gray-900 dark:text-white pr-8">
           {question}
         </h3>
-        <div className={`transform transition-transform ${isOpen ? 'rotate-180' : ''}`}>
+        <div 
+          className={`transform transition-transform duration-200 ${
+            isOpen ? 'rotate-180' : ''
+          }`}
+        >
           <svg
             width="24"
             height="24"
@@ -28,21 +32,17 @@ export function FaqItem({ question, answer }: { question: string; answer: string
           </svg>
         </div>
       </button>
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="overflow-hidden"
-          >
-            <p className="text-gray-600 dark:text-gray-400 pb-6">
-              {answer}
-            </p>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <div 
+        className={`grid transition-all duration-200 ease-in-out ${
+          isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
+        }`}
+      >
+        <div className="overflow-hidden">
+          <p className="text-gray-600 dark:text-gray-400 pb-6">
+            {answer}
+          </p>
+        </div>
+      </div>
     </div>
   );
 } 
