@@ -1,36 +1,27 @@
 'use client';
 
 import { useState } from 'react';
-import { z } from 'zod';
-
-// Share the same validation schema
-const emailSchema = z.object({
-  email: z
-    .string()
-    .min(1, 'Email is required')
-    .email('Please enter a valid email address')
-    .transform(email => email.toLowerCase().trim()),
-});
 
 export function WaitlistForm() {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-  const [message, setMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Validate only on form submission
-    const result = emailSchema.safeParse({ email });
-    if (!result.success) {
+    setStatus('loading');
+    setErrorMessage('');
+
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
       setStatus('error');
-      setMessage(result.error.errors[0].message);
+      setErrorMessage('Please enter a valid email address');
       return;
     }
 
-    setStatus('loading');
-
     try {
+      // TODO: Replace with your actual API endpoint
       const response = await fetch('/api/waitlist', {
         method: 'POST',
         headers: {
@@ -39,49 +30,56 @@ export function WaitlistForm() {
         body: JSON.stringify({ email }),
       });
 
-      const data = await response.json();
-
       if (!response.ok) {
-        throw new Error(data.message || 'Something went wrong');
+        throw new Error('Failed to join waitlist');
       }
 
       setStatus('success');
-      setMessage(data.message);
       setEmail('');
     } catch (error) {
       setStatus('error');
-      setMessage(error instanceof Error ? error.message : 'Failed to join waitlist');
+      setErrorMessage('Failed to join waitlist. Please try again later.');
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-md w-full mx-auto">
-      <div className="flex flex-col sm:flex-row gap-3">
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Enter your email"
-          aria-label="Email address"
-          className="flex-1 px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 
-                   bg-white dark:bg-gray-800 text-gray-900 dark:text-white
-                   focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
-        />
+    <div className="max-w-md w-full mx-auto">
+      <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
+        <div className="flex-grow relative">
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Enter your email"
+            className="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-700 
+                     bg-white dark:bg-gray-800 text-gray-900 dark:text-white
+                     focus:ring-2 focus:ring-emerald-500 focus:border-transparent
+                     transition-all duration-200"
+            disabled={status === 'loading'}
+          />
+          {status === 'error' && (
+            <p className="absolute -bottom-6 left-0 text-sm text-red-500">
+              {errorMessage}
+            </p>
+          )}
+        </div>
         <button
           type="submit"
           disabled={status === 'loading'}
-          className="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold 
-                   rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 
+                   text-white font-semibold rounded-lg
+                   transition-colors duration-200
+                   disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {status === 'loading' ? 'Joining...' : 'Join Waitlist'}
         </button>
-      </div>
-      {message && (
-        <p className={`mt-3 text-sm ${status === 'error' ? 'text-red-500' : 'text-emerald-500'}`}>
-          {message}
+      </form>
+      {status === 'success' && (
+        <p className="mt-4 text-center text-emerald-600 dark:text-emerald-400">
+          Thanks for joining our waitlist! We'll be in touch soon.
         </p>
       )}
-    </form>
+    </div>
   );
 } 
 

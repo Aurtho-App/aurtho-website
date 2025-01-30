@@ -18,9 +18,16 @@ body {
   color: var(--foreground);
   background: var(--background);
   font-family: var(--font-geist-sans);
+  overscroll-behavior: none;
+  overflow: hidden;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
 }
 
 /* Smooth scrolling */
 html {
   scroll-behavior: smooth;
+  overscroll-behavior: none;
+  height: 100%;
 }
