@@ -51,14 +51,15 @@ export function WaitlistForm() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter your email"
-            className="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-700 
-                     bg-white dark:bg-gray-800 text-gray-900 dark:text-white
-                     focus:ring-2 focus:ring-emerald-500 focus:border-transparent
+            className="w-full px-6 py-4 rounded-full bg-white/10 backdrop-blur-sm
+                     text-white placeholder-white/60
+                     border border-white/20 
+                     focus:border-white/40 focus:ring-0 focus:outline-none
                      transition-all duration-200"
             disabled={status === 'loading'}
           />
           {status === 'error' && (
-            <p className="absolute -bottom-6 left-0 text-sm text-red-500">
+            <p className="absolute -bottom-6 left-0 text-sm text-red-300">
               {errorMessage}
             </p>
           )}
@@ -66,16 +67,18 @@ export function WaitlistForm() {
         <button
           type="submit"
           disabled={status === 'loading'}
-          className="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 
-                   text-white font-semibold rounded-lg
-                   transition-colors duration-200
-                   disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-8 py-4 bg-white/20 hover:bg-white/30
+                   text-white font-light rounded-full
+                   backdrop-blur-sm border border-white/20
+                   transition-all duration-200
+                   disabled:opacity-50 disabled:cursor-not-allowed
+                   whitespace-nowrap"
         >
           {status === 'loading' ? 'Joining...' : 'Join Waitlist'}
         </button>
       </form>
       {status === 'success' && (
-        <p className="mt-4 text-center text-emerald-600 dark:text-emerald-400">
+        <p className="mt-4 text-center text-white/80 font-light">
           Thanks for joining our waitlist! We'll be in touch soon.
         </p>
       )}

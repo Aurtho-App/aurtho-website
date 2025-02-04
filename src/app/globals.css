@@ -3,26 +3,26 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: transparent;
+  --foreground: #ffffff;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: transparent;
     --foreground: #ededed;
   }
 }
 
 body {
   color: var(--foreground);
-  background: var(--background);
+  background: linear-gradient(135deg, #244C3C 0%, #51599A 100%);
   font-family: var(--font-geist-sans);
   overscroll-behavior: none;
-  overflow: hidden;
   height: 100vh;
   margin: 0;
   padding: 0;
+  position: relative;
 }
 
 /* Smooth scrolling */
@@ -30,4 +30,30 @@ html {
   scroll-behavior: smooth;
   overscroll-behavior: none;
   height: 100%;
+  background: #244C3C;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+/* Ensure content is above the background */
+main {
+  position: relative;
+  z-index: 1;
+}
+
+/* Prevent background color flashing */
+* {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
