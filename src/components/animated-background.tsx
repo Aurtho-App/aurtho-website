@@ -1,80 +1,87 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 const AnimatedBackground = () => {
-  const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 });
-  const [cursorPosition, setCursorPosition] = useState({ x: -100, y: -100 });
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      const x = (e.clientX / window.innerWidth) * 100;
-      const y = (e.clientY / window.innerHeight) * 100;
-      setMousePosition({ x, y });
-      setCursorPosition({ x: e.clientX, y: e.clientY });
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
-
   return (
-    <>
-      <div
-        className="fixed inset-0 w-full h-full pointer-events-none"
+    <div className="fixed inset-0 w-full h-full pointer-events-none overflow-hidden">
+      <div 
+        className="absolute inset-0"
         style={{
+          background: 'linear-gradient(135deg, #244C3C 0%, #51599A 100%)',
           zIndex: 0,
-          backgroundImage: `
-            radial-gradient(
-              circle at ${mousePosition.x}% ${mousePosition.y}%,
-              rgba(81, 89, 154, 0.85) 0%,
-              rgba(81, 89, 154, 0.4) 25%,
-              rgba(81, 89, 154, 0) 50%
-            ),
-            radial-gradient(
-              circle at ${100 - mousePosition.x}% ${100 - mousePosition.y}%,
-              rgba(36, 76, 60, 0.85) 0%,
-              rgba(36, 76, 60, 0.4) 25%,
-              rgba(36, 76, 60, 0) 50%
-            ),
-            linear-gradient(
-              135deg,
-              #244C3C 0%,
-              #51599A 100%
-            )
+        }}
+      />
+      
+      {/* Subtle gradient shifts */}
+      <div 
+        className="absolute inset-0"
+        style={{
+          zIndex: 1,
+          animation: 'moveFirst 25s ease-in-out infinite',
+          background: `
+            radial-gradient(100% 100% at 50% 50%, rgba(81, 89, 154, 0.15) 0%, rgba(81, 89, 154, 0) 70%),
+            radial-gradient(100% 100% at -20% 120%, rgba(36, 76, 60, 0.15) 0%, rgba(36, 76, 60, 0) 70%)
           `,
-          transition: 'background-position 0.3s ease-out',
-        }}
-      />
-      <div
-        className="fixed pointer-events-none blur-md"
-        style={{
-          zIndex: 1,
-          left: cursorPosition.x,
-          top: cursorPosition.y,
-          transform: 'translate(-50%, -50%)',
-          width: '800px',
-          height: '800px',
-          background: 'radial-gradient(circle at center, rgba(81, 89, 154, 0.15) 0%, transparent 70%)',
-          transition: 'all 0.15s ease-out',
+          filter: 'blur(40px)',
+          transform: 'translate3d(0, 0, 0)',
           mixBlendMode: 'soft-light',
         }}
       />
-      <div
-        className="fixed pointer-events-none blur-[3px]"
+      
+      <div 
+        className="absolute inset-0"
         style={{
-          zIndex: 1,
-          left: cursorPosition.x,
-          top: cursorPosition.y,
-          transform: 'translate(-50%, -50%)',
-          width: '400px',
-          height: '400px',
-          background: 'radial-gradient(circle at center, rgba(36, 76, 60, 0.2) 0%, transparent 70%)',
-          transition: 'all 0.1s ease-out',
+          zIndex: 2,
+          animation: 'moveSecond 30s ease-in-out infinite',
+          background: `
+            radial-gradient(100% 100% at 120% -20%, rgba(81, 89, 154, 0.15) 0%, rgba(81, 89, 154, 0) 70%),
+            radial-gradient(100% 100% at 30% 80%, rgba(36, 76, 60, 0.15) 0%, rgba(36, 76, 60, 0) 70%)
+          `,
+          filter: 'blur(40px)',
+          transform: 'translate3d(0, 0, 0)',
           mixBlendMode: 'soft-light',
         }}
       />
-    </>
+
+      <style jsx>{`
+        @keyframes moveFirst {
+          0% {
+            transform: translate3d(-20%, -20%, 0) scale(1.1);
+          }
+          25% {
+            transform: translate3d(20%, 0%, 0) scale(1);
+          }
+          50% {
+            transform: translate3d(10%, 20%, 0) scale(1.05);
+          }
+          75% {
+            transform: translate3d(-10%, 10%, 0) scale(0.95);
+          }
+          100% {
+            transform: translate3d(-20%, -20%, 0) scale(1.1);
+          }
+        }
+
+        @keyframes moveSecond {
+          0% {
+            transform: translate3d(20%, 20%, 0) scale(0.95);
+          }
+          25% {
+            transform: translate3d(-10%, -10%, 0) scale(1.05);
+          }
+          50% {
+            transform: translate3d(-20%, 20%, 0) scale(1);
+          }
+          75% {
+            transform: translate3d(10%, -20%, 0) scale(1.1);
+          }
+          100% {
+            transform: translate3d(20%, 20%, 0) scale(0.95);
+          }
+        }
+      `}</style>
+    </div>
   );
 };
 
