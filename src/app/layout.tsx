@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { CircleBackground } from "@/components/CircleBackground";
 import "./globals.css";
 
 const geistSans = localFont({
@@ -26,8 +27,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased relative`}
       >
+        <CircleBackground 
+          numberOfCircles={30} 
+          minRadius={400} 
+          maxRadius={400}
+          blurStrength={50}
+          opacity={1.0}
+          speed={2.0}
+        />
         {children}
       </body>
     </html>

@@ -3,20 +3,20 @@
 @tailwind utilities;
 
 :root {
-  --background: transparent;
+  --background: #000000;
   --foreground: #ffffff;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: transparent;
+    --background: #000000;
     --foreground: #ededed;
   }
 }
 
 body {
   color: var(--foreground);
-  background: linear-gradient(135deg, #244C3C 0%, #51599A 100%);
+  background: #000000;
   font-family: var(--font-geist-sans);
   overscroll-behavior: none;
   height: 100vh;
@@ -30,7 +30,7 @@ html {
   scroll-behavior: smooth;
   overscroll-behavior: none;
   height: 100%;
-  background: #244C3C;
+  background: #000000;
 }
 
 @keyframes fadeIn {
